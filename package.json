@@ -1,10 +1,10 @@
 {
-  "name": "lumiverse-bookworm",
-  "version": "2.2.1",
+  "name": "lumiverse-bookworm-strict-agency",
+  "version": "2.2.2",
   "type": "module",
   "main": "dist/backend.js",
   "module": "dist/backend.js",
-  "description": "BookWorm - Literary companion & offline dictionary for Lumiverse",
+  "description": "BookWorm with faithful immersive Polish Draft for roleplay",
   "scripts": {
     "build": "node scripts/build.mjs",
     "build:dictionary": "node scripts/build-dictionary.mjs",
