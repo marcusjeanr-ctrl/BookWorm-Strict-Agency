@@ -1,8 +1,8 @@
 {
-  "version": "2.2.1",
-  "name": "BookWorm",
+  "version": "2.2.2",
+  "name": "BookWorm Strict Agency",
   "identifier": "lumiverse_bookworm",
-  "description": "Your miniature writing companion: an offline English dictionary and thesaurus, plus model-assisted research, translation, and story advice.",
+  "description": "BookWorm with immersive, player-agency-preserving Polish Draft. Original research, dictionary and translation features retained.",
   "author": "angyaruo",
   "permissions": [
     "generation",
@@ -13,10 +13,20 @@
   ],
   "entry_backend": "dist/backend.js",
   "entry_frontend": "dist/frontend.js",
-  "github": "https://github.com/angyaruo/BookWorm",
-  "homepage": "https://github.com/angyaruo/BookWorm",
+  "github": "https://github.com/marcusjeanr-ctrl/BookWorm-Strict-Agency",
+  "homepage": "https://github.com/marcusjeanr-ctrl/BookWorm-Strict-Agency",
   "storage_seed_files": [
-    { "from": "data/lexicon/", "to": "lexicon/", "overwrite": true, "required": true },
-    { "from": "licenses/", "to": "licenses/", "overwrite": true, "required": true }
+    {
+      "from": "data/lexicon/",
+      "to": "lexicon/",
+      "overwrite": true,
+      "required": true
+    },
+    {
+      "from": "licenses/",
+      "to": "licenses/",
+      "overwrite": true,
+      "required": true
+    }
   ]
 }
