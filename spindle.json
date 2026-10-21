@@ -1,8 +1,8 @@
 {
-  "version": "2.2.4",
+  "version": "2.2.5",
   "name": "BookWorm Strict Agency",
   "identifier": "lumiverse_bookworm",
-  "description": "BookWorm with natural immersive action polish, strict player agency, and unquoted dialogue.",
+  "description": "BookWorm natural immersive polish with strict player agency and unquoted dialogue.",
   "author": "angyaruo",
   "permissions": [
     "generation",
