@@ -1,8 +1,8 @@
 {
-  "version": "2.2.3",
+  "version": "2.2.4",
   "name": "BookWorm Strict Agency",
   "identifier": "lumiverse_bookworm",
-  "description": "BookWorm with immersive, player-agency-preserving Polish Draft. Original research, dictionary and translation features retained.",
+  "description": "BookWorm with natural immersive action polish, strict player agency, and unquoted dialogue.",
   "author": "angyaruo",
   "permissions": [
     "generation",
