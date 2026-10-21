@@ -1,6 +1,6 @@
 {
   "name": "lumiverse-bookworm-strict-agency",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "type": "module",
   "main": "dist/backend.js",
   "module": "dist/backend.js",
