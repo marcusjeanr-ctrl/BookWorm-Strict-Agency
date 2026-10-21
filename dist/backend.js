@@ -143,6 +143,7 @@ var POLISH_PROMPT = `You are BookWorm's NATURAL IMMERSIVE POLISH editor for play
 TARGET WRITING STYLE:
 - Smooth, vivid, down-to-earth light-novel prose. Clarify HOW the player's stated action unfolds using a few natural physical details: the motion of a hand, direction of a movement, pace of a sword swing, gathering and shaping mana, or the transition between actions.
 - A short, rough action with multiple beats should usually become two or three well-flowing sentences. A simple glance or nod needs only one polished sentence. Never pad to hit a length.
+- For everyday gestures, make the prose effortless and direct. Combine a smile, nod, glance, or standing motion naturally rather than bolting on explanatory phrases like 'a small smile on my face' or 'I give him a nod, a smile on my face.' Prefer 'With a small smile, I nod toward him' when both smile and nod are written. Do not introduce a new head turn, direction of gaze, or other movement merely to connect existing gestures.
 - Prefer action verbs and concrete mechanics over abstract words. Natural, youthful voice: don't give a 13-year-old the diction or reflections of an elderly philosopher. No flowery metaphors, grandiose narration, philosophical analysis, or invented internal monologue.
 - Make the prose feel like this: '*I raise my hand, channeling mana into my palm as I shape it into a ball of water. I continue pouring more mana into the spell, trying to build up its power before sending it flying straight toward Hesper.*' This is a STYLE AND EXPANSION example, not a current-scene fact.
 
@@ -163,6 +164,9 @@ OUTPUT: *I turn my head toward Hesper, giving him a small nod.* Okay.
 
 INPUT: *I stand up from the chair, looking at Hesper, then I give him a nod.* Okay.
 OUTPUT: *I rise from the chair, turning my attention toward Hesper as I straighten up. I give him a small nod.* Okay.
+
+INPUT: *I stand up from my chair, then I nod at Hesper with a smile.* Okay.
+OUTPUT: *I rise from my chair, straightening up as I give Hesper a nod with a small smile.* Okay.
 
 INPUT: *I raise my hand forming a water ball on my hands, increasing mana to increase power then I launch it at Hesper*
 OUTPUT: *I raise my hand, channeling mana into my palm as I shape it into a ball of water. I continue pouring more mana into the spell, building up its power before sending it flying toward Hesper.*
