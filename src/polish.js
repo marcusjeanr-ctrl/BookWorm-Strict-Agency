@@ -17,6 +17,7 @@ CONTEXT USE — ACTIONS ONLY:
 - Use the chat context, surrounding text, and persona ONLY to make the *action text* fit the scene: who the player is acting toward, what they are holding, where they are (sitting, standing, in a training yard), and what spell or weapon is already in play. Example: if the draft says *I nod at him* and context makes clear 'him' is Hesper, you may write *I nod at Hesper*.
 - Context never touches dialogue. Spoken lines stay exactly as the player wrote them, word for word: do not reword, extend, shorten, correct, translate, add names or honorifics, or change tone to match the scene, the persona, or what an NPC just said. Do not add new dialogue or answer an NPC on the player's behalf.
 - Context still cannot add new actions, outcomes, or NPC reactions; it only sharpens the details of the actions the player already wrote.
+- NO DEFAULT GAZE OPENERS: never add 'turn my gaze/head/attention/eyes toward', 'look toward', or 'glance at' unless the draft itself says the player looks, glances, or turns. A smile or nod aimed at someone stays a smile or nod aimed at them. Never write 'a smile appearing/spreading on my face'; write 'with a small smile' or 'I give him a small smile'.
 - Avoid false precision. Do not change 'look at someone' to 'meet their eyes' or imply the target is standing a certain distance away. For water magic, 'mana gathering in my palm' is acceptable if the player explicitly describes water forming at their hand; don't invent extra visual effects or a named technique.
 
 DIALOGUE AND FORMAT:
@@ -25,10 +26,10 @@ DIALOGUE AND FORMAT:
 
 FEW-SHOT CALIBRATION:
 INPUT: *I look at Hesper with a nod.* "Okay."
-OUTPUT: *I turn my head toward Hesper, giving him a small nod.* Okay.
+OUTPUT: *I look over at Hesper and give him a small nod.* Okay.
 
 INPUT: *I stand up from the chair, looking at Hesper, then I give him a nod.* Okay.
-OUTPUT: *I rise from the chair, turning my attention toward Hesper as I straighten up. I give him a small nod.* Okay.
+OUTPUT: *I rise from the chair and straighten up, looking over at Hesper before giving him a small nod.* Okay.
 
 INPUT: *I stand up from my chair, then I nod at Hesper with a smile.* Okay.
 OUTPUT: *I rise from my chair, straightening up as I give Hesper a nod with a small smile.* Okay.
@@ -37,7 +38,10 @@ INPUT: *I raise my hand forming a water ball on my hands, increasing mana to inc
 OUTPUT: *I raise my hand, channeling mana into my palm as I shape it into a ball of water. I continue pouring more mana into the spell, building up its power before sending it flying toward Hesper.*
 
 INPUT: *I raise my hand and try to create a large ball of water, then I throw it at Hesper*
-OUTPUT: *I lift my hand toward Hesper, gathering mana as I try to shape it into a large ball of water. I focus on forming the spell before attempting to send it straight toward him.*
+OUTPUT: *I raise my hand, gathering mana as I try to shape it into a large ball of water. I focus on forming the spell before attempting to send it straight toward him.*
+
+INPUT: *I smile at my father* Thank you father!
+OUTPUT: *I give my father a small smile.* Thank you father!
 
 INPUT: *I grip my training sword and rush toward my opponent, swinging at his side before stepping back.*
 OUTPUT: *I tighten my grip on the training sword and rush toward my opponent, closing the distance as I bring the blade across toward his side. After the swing, I pull back a step, returning to where I started.*
