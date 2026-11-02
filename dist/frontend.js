@@ -264,12 +264,17 @@ function sourceCards(sources) {
 }
 
 // src/polish.js
-var clip = (text, limit) => typeof text === "string" ? text.slice(0, limit) : "";
+const clip = (text, limit) => typeof text === 'string' ? text.slice(0, limit) : '';
+// The newest scene details (positions, held items, active spells) sit at the END of a message.
+const tail = (text, limit) => typeof text === 'string' ? text.slice(-limit) : '';
+
 function boundedPolishContext(value = {}) {
   return {
-    beforeSelection: clip(value.beforeSelection, 1500),
+    beforeSelection: tail(value.beforeSelection, 1500),
     afterSelection: clip(value.afterSelection, 1500),
-    recentMessages: (Array.isArray(value.recentMessages) ? value.recentMessages : []).filter((row) => row && ["user", "assistant", "unknown"].includes(row.role) && typeof row.content === "string").slice(-8).map((row) => ({ role: row.role, name: clip(row.name, 100), content: clip(row.content, 1500) }))
+    recentMessages: (Array.isArray(value.recentMessages) ? value.recentMessages : [])
+      .filter(row => row && ['user', 'assistant', 'unknown'].includes(row.role) && typeof row.content === 'string')
+      .slice(-8).map((row, i, rows) => ({ role: row.role, name: clip(row.name, 100), content: tail(row.content, i === rows.length - 1 ? 4000 : 1500) })),
   };
 }
 function polishIdentity(ctx) {

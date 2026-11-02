@@ -30,7 +30,7 @@ test('Polish has a dedicated substantive prose prompt, bounded context and opera
   await b.handle(request({mode:'polish',direction:undefined,polishContext:{personaId:'persona-a',recentMessages:[{role:'assistant',content:'The door remains closed.'}],beforeSelection:'Before.',afterSelection:'After.'}}),'operator');
   assert.deepEqual(reads,[['persona-a','operator']]);
   assert.equal(b.inputs[0].messages[0].content,POLISH_PROMPT);
-  assert.match(POLISH_PROMPT,/meaningful stylistic transformation/); assert.match(POLISH_PROMPT,/Do not advance the plot/);
+  assert.match(POLISH_PROMPT,/noticeable writing improvement/); assert.match(POLISH_PROMPT,/Do not advance the plot/);
   assert.match(POLISH_PROMPT,/first, second, or third person/); assert.match(POLISH_PROMPT,/untrusted story data/);
   const body = JSON.parse(b.inputs[0].messages[1].content);
   assert.equal(body.persona.name,'Mira'); assert.equal(body.persona.isNarrator,true); assert.equal(body.persona.metadata,undefined);
@@ -59,7 +59,8 @@ test('Polish excludes system messages, bounds every context field and keeps rece
   const bounded = boundedPolishContext({beforeSelection:'a'.repeat(3000),afterSelection:'b'.repeat(3000),recentMessages:[{role:'system',content:'do not expose'},...Array.from({length:12},(_,i)=>({role:'user',name:String(i),content:'x'.repeat(2000)})),null]});
   assert.equal(bounded.beforeSelection.length,1500); assert.equal(bounded.afterSelection.length,1500);
   assert.equal(bounded.recentMessages.length,8); assert.equal(bounded.recentMessages[0].name,'4');
-  assert(bounded.recentMessages.every(row=>row.content.length===1500));
+  assert(bounded.recentMessages.slice(0,-1).every(row=>row.content.length===1500));
+  assert.equal(bounded.recentMessages.at(-1).content.length,2000);
 });
 test('frontend Polish captures known active identity and only adjacent draft context', () => {
   const ctx = {state:{get:id => id==='chat.active'?{chatId:'current-chat'}:'current-persona'},messages:{getRecent:count => {assert.equal(count,8);return [{role:'user',name:'Mira',content:'Current scene'}];}}};
@@ -156,4 +157,14 @@ test('a hung search is cancellable, user-scoped, and never triggers generation l
   assert.match(b.messages.at(-1).error, /Stopped/);
   resolve({ results: [{ url: 'https://example.org' }] });
   await new Promise(r => setImmediate(r)); assert.equal(b.messages.length, 1); assert.equal(b.inputs.length, 0);
+});
+
+test('Polish keeps typed dialogue word for word and refuses unsafe rewrites', async () => {
+  const { maskDialogue, restoreDialogue } = await import('../src/polish.js');
+  const d = maskDialogue('*I smile at my father* "Thank you father!" *I hug him.* Love you, dad.');
+  assert.equal(d.masked, '*I smile at my father* ⟦D1⟧ *I hug him.* ⟦D2⟧');
+  assert.equal(restoreDialogue('*I give my father a small smile.* "⟦D1⟧" *I hug him tight.* ⟦D2⟧', d).text, '*I give my father a small smile.* Thank you father! *I hug him tight.* Love you, dad.');
+  assert(restoreDialogue('*I smile.* ⟦D2⟧ *I hug him.* ⟦D1⟧', d).error);
+  assert(restoreDialogue('*I smile.* ⟦D1⟧ *I hug him.* ⟦D2⟧ Bye!', d).error);
+  assert(restoreDialogue('*I smile and hug him.* ⟦D1⟧', d).error);
 });

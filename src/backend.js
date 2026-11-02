@@ -1,6 +1,6 @@
 import { createDictionary } from './dictionary.js';
 import { searchWeb } from './web-search.js';
-import { POLISH_PROMPT, boundedPolishContext, polishPersona } from './polish.js';
+import { POLISH_PROMPT, boundedPolishContext, polishPersona, maskDialogue, restoreDialogue } from './polish.js';
 
 const PROMPTS = {
   polish: POLISH_PROMPT,
@@ -94,12 +94,13 @@ export function registerBackend(api) {
         : connections.find(c => c.is_default) || connections[0];
       if (!connection) throw new Error('Choose an available model connection in the book settings.');
       const scene = mode === 'next_step' && typeof payload.sceneContext === 'string' ? payload.sceneContext.slice(0, 6000) : '';
-      let polish;
+      let polish, dialogue;
       if (mode === 'polish') {
         const context = payload.polishContext && typeof payload.polishContext === 'object' ? payload.polishContext : {};
         const bounded = boundedPolishContext(context);
         const { persona, note } = await polishPersona(api, context, userId, promise => untilAborted(promise, signal));
-        polish = { selectedPassage: query, ...bounded, persona };
+        dialogue = maskDialogue(query);
+        polish = { selectedPassage: dialogue.masked, spokenLines: dialogue.spokenLines, ...bounded, persona };
         contextNote = [note, !bounded.recentMessages.length ? 'No recent chat context was available.' : ''].filter(Boolean).join(' ');
       }
       const input = {
@@ -136,10 +137,15 @@ export function registerBackend(api) {
         terminal = true;
       }
       answer = cleanAnswer(answer);
+      let dialogueError = '';
+      if (dialogue && answer) {
+        const restored = restoreDialogue(answer, dialogue);
+        if (restored.error) { dialogueError = restored.error; answer = ''; } else answer = restored.text;
+      }
       const limited = /length|max[_ -]?tokens|token_limit/i.test(finishReason);
       const filtered = /content_filter|safety|blocked/i.test(finishReason);
       const complete = terminal && !!answer && !limited && !filtered && (!finishReason || /^(stop|end_turn|completed|stop_sequence)$/i.test(finishReason));
-      send({ answer, complete, sources, warning: limited ? 'The model reached its output limit. Enable Extended answers in book settings, or ask for a shorter passage.' : filtered ? 'The provider stopped this response through its content filter.' : !complete && answer ? 'The provider did not confirm a complete response. Your draft was not changed.' : '', error: !answer ? 'The model returned no readable answer. Try another connection.' : undefined });
+      send({ answer, complete, sources, warning: limited ? 'The model reached its output limit. Enable Extended answers in book settings, or ask for a shorter passage.' : filtered ? 'The provider stopped this response through its content filter.' : !complete && answer ? 'The provider did not confirm a complete response. Your draft was not changed.' : '', error: dialogueError || (!answer ? 'The model returned no readable answer. Try another connection.' : undefined) });
     } catch (error) {
       if (!signal.aborted) api.log.error('BookWorm request failed:', error);
       const reason = request.timedOut
